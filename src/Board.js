@@ -137,11 +137,40 @@
     //
     // test if a specific major diagonal on this board contains a conflict
     hasMajorDiagonalConflictAt: function(majorDiagonalColumnIndexAtFirstRow) {
-      return false; // fixme
+      // create empty array to hold all major diagonal index values
+      var majorDiagonalIndices = [];
+      // loop through each row
+      for (var rowIndex = 0; rowIndex < this.rows().length; rowIndex++) {
+        // if a value within the row is not equal to 0:
+        if (this.rows()[rowIndex].indexOf(1) !== -1) {
+          // store that value as colIndex
+          var colIndex = this.rows()[rowIndex].indexOf(1);
+          // get its major diagonal index, set it to majorDiagonalIndex
+          var majorDiagonalIndex = this._getFirstRowColumnIndexForMajorDiagonalOn(rowIndex, colIndex);
+          // push this to the array of major diagonal indexvalues
+          majorDiagonalIndices.push(majorDiagonalIndex);
+        }
+      }
+
+      // push values into checkArray only if they have not been pushed in previously
+      var checkArray = [];
+      for (var i = 0; i < majorDiagonalIndices.length; i++) {
+        if (checkArray.indexOf(majorDiagonalIndices[i]) === -1) {
+          checkArray.push(majorDiagonalIndices[i]);
+        }
+      }
+      
+      return checkArray.length !== majorDiagonalIndices.length;
     },
 
     // test if any major diagonals on this board contain conflicts
     hasAnyMajorDiagonalConflicts: function() {
+      // for loop of some sort
+      // for ();
+      //   if (hasMajorDiagonalConflictAt(i)) {
+      //     return true;
+      //   }
+      // }
       return false; // fixme
     },
 
@@ -152,6 +181,7 @@
     //
     // test if a specific minor diagonal on this board contains a conflict
     hasMinorDiagonalConflictAt: function(minorDiagonalColumnIndexAtFirstRow) {
+      // this._getFirstRowColumnIndexForMinorDiagonalOn(rowIndex, colIndex);
       return false; // fixme
     },
 
