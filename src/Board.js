@@ -139,8 +139,7 @@
     hasMajorDiagonalConflictAt: function(majorDiagonalColumnIndexAtFirstRow) {
       var counter = 0;
       // loop through rows
-      for (var rowIndex = 0; rowIndex < this.rows().length; rowIndex++) {
-        // if majorDiagonalIndex in the row is 1, increment counter
+      for (var rowIndex = 0; rowIndex < this.rows().length - 1; rowIndex++) {
         if (this.rows()[rowIndex][rowIndex + majorDiagonalColumnIndexAtFirstRow] !== 0) {
           counter++;
         }
@@ -155,13 +154,12 @@
 
     // test if any major diagonals on this board contain conflicts
     hasAnyMajorDiagonalConflicts: function() {
-      // for loop of some sort
-      // for ();
-      //   if (hasMajorDiagonalConflictAt(i)) {
-      //     return true;
-      //   }
-      // }
-      return false; // fixme
+      for (var i = 0; i < this.rows().length; i++) {
+        if (this.hasMajorDiagonalConflictAt(i)) {
+          return true;
+        }
+      }
+      return false;
     },
 
 
