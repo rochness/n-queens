@@ -137,6 +137,15 @@
     //
     // test if a specific major diagonal on this board contains a conflict
     hasMajorDiagonalConflictAt: function(majorDiagonalColumnIndexAtFirstRow) {
+      var counter = 0;
+      for(var rowIndex = 0; rowIndex < this.rows().length; rowIndex++){
+        if(this.rows()[rowIndex][rowIndex + majorDiagonalColumnIndexAtFirstRow] === 1){
+          counter++;
+        }
+        if(counter > 1){
+          return true;
+        }
+      }
       return false;
     },
 
