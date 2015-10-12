@@ -137,30 +137,20 @@
     //
     // test if a specific major diagonal on this board contains a conflict
     hasMajorDiagonalConflictAt: function(majorDiagonalColumnIndexAtFirstRow) {
-      // create empty array to hold all major diagonal index values
-      var majorDiagonalIndices = [];
-      // loop through each row
-      for (var rowIndex = 0; rowIndex < this.rows().length; rowIndex++) {
-        // if a value within the row is not equal to 0:
-        if (this.rows()[rowIndex].indexOf(1) !== -1) {
-          // store that value as colIndex
-          var colIndex = this.rows()[rowIndex].indexOf(1);
-          // get its major diagonal index, set it to majorDiagonalIndex
-          var majorDiagonalIndex = this._getFirstRowColumnIndexForMajorDiagonalOn(rowIndex, colIndex);
-          // push this to the array of major diagonal indexvalues
-          majorDiagonalIndices.push(majorDiagonalIndex);
+      var counter = 0;
+      // loop through rows
+      for (var i = 0; i < this.rows().length; i++) {
+        // if majorDiagonalIndex in the row is 1, increment counter
+        if (this.rows()[i][i + majorDiagonalColumnIndexAtFirstRow] !== 0) {
+          counter++;
         }
-      }
 
-      // push values into checkArray only if they have not been pushed in previously
-      var checkArray = [];
-      for (var i = 0; i < majorDiagonalIndices.length; i++) {
-        if (checkArray.indexOf(majorDiagonalIndices[i]) === -1) {
-          checkArray.push(majorDiagonalIndices[i]);
+        // if counter is greater than 1, there's a major diagonal conflict at that index
+        if (counter > 1) {
+          return true;
         }
       }
-      
-      return checkArray.length !== majorDiagonalIndices.length;
+      return false;
     },
 
     // test if any major diagonals on this board contain conflicts
