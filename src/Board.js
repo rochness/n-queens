@@ -139,9 +139,9 @@
     hasMajorDiagonalConflictAt: function(majorDiagonalColumnIndexAtFirstRow) {
       var counter = 0;
       // loop through rows
-      for (var i = 0; i < this.rows().length; i++) {
+      for (var rowIndex = 0; rowIndex < this.rows().length; rowIndex++) {
         // if majorDiagonalIndex in the row is 1, increment counter
-        if (this.rows()[i][i + majorDiagonalColumnIndexAtFirstRow] !== 0) {
+        if (this.rows()[rowIndex][rowIndex + majorDiagonalColumnIndexAtFirstRow] !== 0) {
           counter++;
         }
 
