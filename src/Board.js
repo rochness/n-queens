@@ -169,8 +169,17 @@
     //
     // test if a specific minor diagonal on this board contains a conflict
     hasMinorDiagonalConflictAt: function(minorDiagonalColumnIndexAtFirstRow) {
-      // this._getFirstRowColumnIndexForMinorDiagonalOn(rowIndex, colIndex);
-      return false; // fixme
+      var counter = 0;
+      for (var rowIndex = 0; rowIndex < this.rows().length-1; rowIndex++) {
+        if (this.rows()[rowIndex][rowIndex - minorDiagonalColumnIndexAtFirstRow] !== 0) {
+          counter++;
+        }
+
+        if (counter > 1) {
+          return true;
+        }
+      }
+      return false;
     },
 
     // test if any minor diagonals on this board contain conflicts
