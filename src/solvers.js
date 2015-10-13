@@ -35,7 +35,7 @@ window.findNRooksSolution = function(n) {
       colIndex = Math.floor(Math.random() * n);
     }
     columnsCalled.push(colIndex);
-    // set that point in the matrix equal to 1
+    // set that point in the arr equal to 1
     solution[rowIndex][colIndex] = 1;
   }
 
@@ -131,8 +131,51 @@ window.findNQueensSolution = function(n) {
 
 // return the number of nxn chessboards that exist, with n queens placed such that none of them can attack each other
 window.countNQueensSolutions = function(n) {
-  var solutionCount = undefined; //fixme
+  var solutionCount = 0;
+
+  var recursiveCount = function(temporaryBoard) {
+    if (temporaryBoard.length === n) {
+      if (checkQueenSolution(temporaryBoard)) {
+        solutionCount++;
+      }
+      return;
+    }
+    for (var i = 0; i < n; i++) {
+      var boardCheck = temporaryBoard.concat(i);
+      console.log(boardCheck);
+      if (checkQueenSolution(boardCheck)) {
+        recursiveCount(boardCheck);
+      } else {
+        continue;
+      }
+    }
+  };
+
+  recursiveCount([]);
 
   console.log('Number of solutions for ' + n + ' queens:', solutionCount);
   return solutionCount;
 };
+
+window.checkRookSolution = function(arr) {
+  if (_.uniq(arr).length !== arr.length) {
+    return false;
+  } else {
+    return true;
+  }
+};
+ 
+window.checkQueenSolution = function(arr) {
+  if(!checkRookSolution(arr)) {
+    return false;
+  }
+  for(var rowIndex = 0; rowIndex < arr.length; rowIndex++){
+    for(var colIndex = rowIndex+1; colIndex < arr.length; colIndex++){
+      if(rowIndex - colIndex === arr[rowIndex] - arr[colIndex] || rowIndex - colIndex === -arr[rowIndex] + arr[colIndex]){
+        return false;
+      }
+    }
+  }
+  return true;
+};
+
