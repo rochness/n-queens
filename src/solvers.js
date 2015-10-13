@@ -144,8 +144,6 @@ window.countNQueensSolutions = function(n) {
       var boardCheck = temporaryBoard.concat(i);
       if (verifyNQueenSolution(boardCheck)) {
         recursiveCount(boardCheck);
-      } else {
-        continue;
       }
     }
   };
@@ -160,9 +158,9 @@ window.verifyNQueenSolution = function(arr) {
   if (_.uniq(arr).length !== arr.length) {
     return false;
   }
-  for (var rowIndex = 0; rowIndex < arr.length; rowIndex++) {
-    for (var colIndex = rowIndex+1; colIndex < arr.length; colIndex++) {
-      if (rowIndex - colIndex === arr[rowIndex] - arr[colIndex] || rowIndex - colIndex === -arr[rowIndex] + arr[colIndex]) {
+  for (var i = 0; i < arr.length; i++) {
+    for (var j = i + 1; j < arr.length; j++) {
+      if (i - j === arr[i] - arr[j] || i - j === -arr[i] + arr[j]) {
         return false;
       }
     }
