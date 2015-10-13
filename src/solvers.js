@@ -155,17 +155,9 @@ window.countNQueensSolutions = function(n) {
   console.log('Number of solutions for ' + n + ' queens:', solutionCount);
   return solutionCount;
 };
-
-window.checkRookSolution = function(arr) {
-  if (_.uniq(arr).length !== arr.length) {
-    return false;
-  } else {
-    return true;
-  }
-};
  
 window.checkQueenSolution = function(arr) {
-  if (!checkRookSolution(arr)) {
+  if (_.uniq(arr).length !== arr.length) {
     return false;
   }
   for (var rowIndex = 0; rowIndex < arr.length; rowIndex++) {
