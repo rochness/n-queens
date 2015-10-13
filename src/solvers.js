@@ -135,14 +135,14 @@ window.countNQueensSolutions = function(n) {
 
   var recursiveCount = function(temporaryBoard) {
     if (temporaryBoard.length === n) {
-      if (checkQueenSolution(temporaryBoard)) {
+      if (verifyNQueenSolution(temporaryBoard)) {
         solutionCount++;
       }
       return;
     }
     for (var i = 0; i < n; i++) {
       var boardCheck = temporaryBoard.concat(i);
-      if (checkQueenSolution(boardCheck)) {
+      if (verifyNQueenSolution(boardCheck)) {
         recursiveCount(boardCheck);
       } else {
         continue;
@@ -156,7 +156,7 @@ window.countNQueensSolutions = function(n) {
   return solutionCount;
 };
  
-window.checkQueenSolution = function(arr) {
+window.verifyNQueenSolution = function(arr) {
   if (_.uniq(arr).length !== arr.length) {
     return false;
   }
