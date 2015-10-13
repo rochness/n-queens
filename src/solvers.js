@@ -142,7 +142,6 @@ window.countNQueensSolutions = function(n) {
     }
     for (var i = 0; i < n; i++) {
       var boardCheck = temporaryBoard.concat(i);
-      console.log(boardCheck);
       if (checkQueenSolution(boardCheck)) {
         recursiveCount(boardCheck);
       } else {
@@ -166,12 +165,12 @@ window.checkRookSolution = function(arr) {
 };
  
 window.checkQueenSolution = function(arr) {
-  if(!checkRookSolution(arr)) {
+  if (!checkRookSolution(arr)) {
     return false;
   }
-  for(var rowIndex = 0; rowIndex < arr.length; rowIndex++){
-    for(var colIndex = rowIndex+1; colIndex < arr.length; colIndex++){
-      if(rowIndex - colIndex === arr[rowIndex] - arr[colIndex] || rowIndex - colIndex === -arr[rowIndex] + arr[colIndex]){
+  for (var rowIndex = 0; rowIndex < arr.length; rowIndex++) {
+    for (var colIndex = rowIndex+1; colIndex < arr.length; colIndex++) {
+      if (rowIndex - colIndex === arr[rowIndex] - arr[colIndex] || rowIndex - colIndex === -arr[rowIndex] + arr[colIndex]) {
         return false;
       }
     }
