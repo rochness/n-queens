@@ -61,15 +61,7 @@ window.countNRooksSolutions = function(n) {
 
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n queens placed such that none of them can attack each other
 window.findNQueensSolution = function(n) {
-
- /* || (rowIndex === 0 && colIndex === 0)
-                                          || (rowIndex === 0 && colIndex === n-1)
-                                          || (rowIndex === n-1 && colIndex === 0)
-                                          || (rowIndex === n-1 && colIndex === n-1)*/
-
   var solution = [];
-
-  if (n === 0) { return []; };
 
     for (var i = 0; i < n; i++) {
       solution.push([]);
@@ -83,40 +75,58 @@ window.findNQueensSolution = function(n) {
   if (n === 2 || n === 3) {
     return board.rows();
   }
-  // for (var rowIndex = 0; rowIndex < n; rowIndex++) {
-  //   var colIndex = Math.floor(Math.random() * (n-1));
-  //   board.togglePiece(rowIndex, colIndex);
-  //   while (board.hasAnyQueensConflicts()) {
-  //     //resets piece back to 0 because there's a conflict
-  //     board.togglePiece(rowIndex, colIndex);
-  //     //keep generating a new colIndex until there is no conflict at (rowIndex, colIndex)
-  //     colIndex = Math.floor(Math.random() * (n-1));
-  //     if (board.rows()[rowIndex][colIndex] === 0) {
-  //       board.togglePiece(rowIndex, colIndex);
-  //     }
-  //   }
-  // }
 
-  var firstColIndex;
-  if (n > 1) {
-    firstColIndex = Math.ceil(Math.random() * (n-2)) + 1;
-  } else {
-    firstColIndex = 0;
-  }
-  board.togglePiece(0, firstColIndex);
-  for (var rowIndex = 1; rowIndex < n; rowIndex++) {
-    for (var colIndex = 0; colIndex < n; colIndex++) {
+  var recursiveCheck = function(rowIndex) {
+    // base case: no queens conflicts and rowIndex = n-1
+    if (rowIndex === n && !board.hasAnyQueensConflicts()) {
+      return board.rows();
+    }
+    // see if there's already an element toggled in the row
+    var colIndex = board.rows()[rowIndex].indexOf(1);
+    // if there was no prior element, set colIndex to zero and toggle there
+    if (colIndex === -1) {
+      colIndex = 0;
       board.togglePiece(rowIndex, colIndex);
-      if (board.hasAnyQueensConflicts()) {
+    // else, toggle current colIndex off and turn on one colIndex to the right
+    } else if (colIndex === (n - 1)) {
+      board.togglePiece(rowIndex, colIndex);
+      return recursiveCheck(rowIndex-1);
+    } else {
+      board.togglePiece(rowIndex, colIndex);
+      colIndex++;
+      board.togglePiece(rowIndex, colIndex);
+    }
+    // check if there's a conflict
+    if (board.hasAnyQueensConflicts()) {
+      while (board.hasAnyQueensConflicts() && colIndex < n) {
         board.togglePiece(rowIndex, colIndex);
+        // if you get to the end, call recursiveCheck on rowIndex-1
+        if (colIndex === n-1) {
+          return recursiveCheck(rowIndex-1);
+        }
+        colIndex++;
+        board.togglePiece(rowIndex, colIndex);
+        // keep going until you either don't have any queens conflicts or reach the end of the row
+      }
+
+      // if you get to an element where you don't have any queens conflicts, call recursiveCheck on rowIndex+1
+      if (!board.hasAnyQueensConflicts()) {
+        return recursiveCheck(rowIndex+1);
+      }
+    } else {
+      // if there isn't, toggle the first column index
+      if (board.hasAnyQueensConflicts()) {
+        return recursiveCheck(rowIndex);
       } else {
-        break;
+        // then call recursiveCheck on rowIndex+1
+        return recursiveCheck(rowIndex+1);
       }
     }
-  }
+  };
+
+  return recursiveCheck(0);
 
   console.log('Single solution for ' + n + ' queens:', JSON.stringify(solution));
-  return board.rows();
 };
 
 // return the number of nxn chessboards that exist, with n queens placed such that none of them can attack each other
