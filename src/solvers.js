@@ -132,36 +132,39 @@ window.findNQueensSolution = function(n) {
 // return the number of nxn chessboards that exist, with n queens placed such that none of them can attack each other
 window.countNQueensSolutions = function(n) {
   var solutionCount = 0;
-
-  var recursiveCount = function(temporaryBoard) {
-    if (temporaryBoard.length === n) {
-      if (verifyNQueenSolution(temporaryBoard)) {
-        solutionCount++;
-      }
-      return;
-    }
-    for (var i = 0; i < n; i++) {
-      var boardCheck = temporaryBoard.concat(i);
-      if (verifyNQueenSolution(boardCheck)) {
-        recursiveCount(boardCheck);
-      }
-    }
-  };
-
-  recursiveCount([]);
+  recursiveCount([], n, function(){
+    solutionCount++;
+  });
 
   console.log('Number of solutions for ' + n + ' queens:', solutionCount);
   return solutionCount;
 };
+
+window.recursiveCount = function(temporaryBoard, n, cb) {
+  if (temporaryBoard.length === n) {
+    if (verifyNQueenSolution(temporaryBoard, 'queen')) {
+      cb();
+      return;
+    }
+  }
+  for (var i = 0; i < n; i++) {
+    var boardCheck = temporaryBoard.concat(i);
+    if (verifyNQueenSolution(boardCheck, 'queen')) {
+      recursiveCount(boardCheck, n, cb);
+    }
+  }
+};
  
-window.verifyNQueenSolution = function(arr) {
+window.verifyNQueenSolution = function(arr, validator) {
   if (_.uniq(arr).length !== arr.length) {
     return false;
   }
-  for (var i = 0; i < arr.length; i++) {
-    for (var j = i + 1; j < arr.length; j++) {
-      if (i - j === arr[i] - arr[j] || i - j === -arr[i] + arr[j]) {
-        return false;
+  if (validator === 'queen') {
+    for (var i = 0; i < arr.length; i++) {
+      for (var j = i + 1; j < arr.length; j++) {
+        if (i - j === arr[i] - arr[j] || i - j === -arr[i] + arr[j]) {
+          return false;
+        }
       }
     }
   }
