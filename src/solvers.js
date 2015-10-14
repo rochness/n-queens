@@ -114,7 +114,10 @@ window.recursiveSolutionFinder = function(temporaryBoard, n, cb, validator) {
   for (var i = 0; i < n; i++) {
     var boardCheck = temporaryBoard.concat(i);
     if (verifyNSolution(boardCheck, validator)) {
-      recursiveSolutionFinder(boardCheck, n, cb, validator);
+      var result = recursiveSolutionFinder(boardCheck, n, cb, validator);
+      if (result) {
+        return result;  // eject out of function if we found solution
+      }
     }
   }
 };
