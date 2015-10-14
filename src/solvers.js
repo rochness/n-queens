@@ -46,14 +46,10 @@ window.findNRooksSolution = function(n) {
 
 // return the number of nxn chessboards that exist, with n rooks placed such that none of them can attack each other
 window.countNRooksSolutions = function(n) {
-  var factorial = function(n) {
-    if (n === 1) {
-      return 1;
-    } else {
-      return n * factorial(n - 1);
-    }
-  }
-  var solutionCount = factorial(n);
+  var solutionCount = 0;
+  recursiveCount([], n, function(){
+    solutionCount++;
+  }, 'rook');
 
   console.log('Number of solutions for ' + n + ' rooks:', solutionCount);
   return solutionCount;
@@ -134,28 +130,28 @@ window.countNQueensSolutions = function(n) {
   var solutionCount = 0;
   recursiveCount([], n, function(){
     solutionCount++;
-  });
+  }, 'queen');
 
   console.log('Number of solutions for ' + n + ' queens:', solutionCount);
   return solutionCount;
 };
 
-window.recursiveCount = function(temporaryBoard, n, cb) {
+window.recursiveCount = function(temporaryBoard, n, cb, validator) {
   if (temporaryBoard.length === n) {
-    if (verifyNQueenSolution(temporaryBoard, 'queen')) {
+    if (verifyNSolution(temporaryBoard, validator)) {
       cb();
       return;
     }
   }
   for (var i = 0; i < n; i++) {
     var boardCheck = temporaryBoard.concat(i);
-    if (verifyNQueenSolution(boardCheck, 'queen')) {
-      recursiveCount(boardCheck, n, cb);
+    if (verifyNSolution(boardCheck, validator)) {
+      recursiveCount(boardCheck, n, cb, validator);
     }
   }
 };
  
-window.verifyNQueenSolution = function(arr, validator) {
+window.verifyNSolution = function(arr, validator) {
   if (_.uniq(arr).length !== arr.length) {
     return false;
   }
